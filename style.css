@@ -1,0 +1,231 @@
+/* 色はここでまとめて決めておくと、後から変えやすい */
+:root {
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --text: #222222;
+  --muted: #888888;
+  --accent: #3b82f6;
+  --danger: #ef4444;
+  --border: #e2e4e8;
+  /* 分類ごとの色 */
+  --work: #3b82f6;
+  --work-bg: #eff6ff;
+  --private: #f97316;
+  --private-bg: #fff7ed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 40px 16px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+h1 {
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+
+/* 入力欄とボタンを横並びにする */
+.todo-form {
+  display: flex;
+  gap: 8px;
+}
+
+.todo-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.todo-form select {
+  padding: 10px 8px;
+  font-size: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.todo-form button {
+  padding: 10px 16px;
+  font-size: 16px;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* 音声入力ボタン（.todo-form button の設定を上書きする） */
+.todo-form .voice-button {
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+/* 聞き取り中は赤くして、点滅させる */
+.todo-form .voice-button.listening {
+  background: var(--danger);
+  border-color: var(--danger);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.voice-status {
+  min-height: 1em;
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* スマホなど画面が狭いときは、入力欄だけ1行目に置き、残りを2行目に並べる */
+@media (max-width: 480px) {
+  body {
+    padding: 16px;
+  }
+
+  .app {
+    padding: 16px;
+  }
+
+  .todo-form {
+    flex-wrap: wrap;
+  }
+
+  .todo-form input {
+    flex-basis: 100%;
+  }
+
+  .todo-form select {
+    flex: 1;
+  }
+}
+
+/* 表示切り替えタブ */
+.filters {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.filter-button {
+  padding: 6px 14px;
+  font-size: 14px;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* 選択中のタブは塗りつぶす */
+.filter-button.active {
+  color: #fff;
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.filter-button.active[data-filter="work"] {
+  background: var(--work);
+  border-color: var(--work);
+}
+
+.filter-button.active[data-filter="private"] {
+  background: var(--private);
+  border-color: var(--private);
+}
+
+.todo-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+  border-left: 4px solid transparent;
+}
+
+/* 分類ごとに左の線と背景の色を変える */
+.todo-item.work {
+  background: var(--work-bg);
+  border-left-color: var(--work);
+}
+
+.todo-item.private {
+  background: var(--private-bg);
+  border-left-color: var(--private);
+}
+
+/* 分類のラベル（「仕事」「プライベート」の小さな札）。押すと分類が切り替わる */
+.category-badge {
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.category-badge.work {
+  background: var(--work);
+}
+
+.category-badge.private {
+  background: var(--private);
+}
+
+.todo-item label {
+  flex: 1;
+  cursor: pointer;
+  word-break: break-all;
+}
+
+/* 完了した ToDo は線を引いて薄くする */
+.todo-item.done label {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.delete-button {
+  padding: 4px 10px;
+  font-size: 14px;
+  color: var(--danger);
+  background: none;
+  border: 1px solid var(--danger);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.todo-count {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}

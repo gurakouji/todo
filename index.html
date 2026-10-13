@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo リスト</title>
+  <!-- 見た目は style.css に書く -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>ToDo リスト</h1>
+
+    <!-- 入力欄と追加ボタン。form にすると Enter キーでも追加できる -->
+    <form id="todo-form" class="todo-form">
+      <input id="todo-input" type="text" placeholder="やることを入力" autocomplete="off" required>
+      <!-- 音声入力ボタン。type="button" にすると押してもフォームが送信されない -->
+      <button id="voice-button" type="button" class="voice-button" aria-label="音声で入力">🎤</button>
+      <!-- 分類を選ぶ。value の work / private がデータとして保存される -->
+      <select id="todo-category" aria-label="分類">
+        <option value="work">仕事</option>
+        <option value="private">プライベート</option>
+      </select>
+      <button type="submit">追加</button>
+    </form>
+
+    <!-- 音声入力の状態（「聞き取り中…」など）を表示する場所 -->
+    <p id="voice-status" class="voice-status" aria-live="polite"></p>
+
+    <!-- 表示の切り替えタブ。data-filter の値で絞り込む -->
+    <div id="filters" class="filters">
+      <button type="button" class="filter-button active" data-filter="all">すべて</button>
+      <button type="button" class="filter-button" data-filter="work">仕事</button>
+      <button type="button" class="filter-button" data-filter="private">プライベート</button>
+    </div>
+
+    <!-- ToDo の一覧。中身は script.js が作る -->
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <p id="todo-count" class="todo-count"></p>
+  </main>
+
+  <!-- 動きは script.js に書く -->
+  <script src="script.js"></script>
+</body>
+</html>
