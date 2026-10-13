@@ -6,6 +6,7 @@
   --muted: #888888;
   --accent: #3b82f6;
   --danger: #ef4444;
+  --warning: #ea580c;
   --border: #e2e4e8;
   /* 分類ごとの色 */
   --work: #3b82f6;
@@ -27,7 +28,7 @@ body {
 }
 
 .app {
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
   padding: 24px;
   background: var(--card);
@@ -40,27 +41,35 @@ h1 {
   font-size: 24px;
 }
 
-/* 入力欄とボタンを横並びにする */
+/* ---- 入力フォーム ---- */
 .todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 1行の中で横に並べる */
+.form-row {
   display: flex;
   gap: 8px;
 }
 
-.todo-form input {
-  flex: 1;
+/* 入力欄は、iPhone で拡大されないように文字を 16px 以上にする */
+.todo-form input,
+.todo-form select {
   min-width: 0;
   padding: 10px 12px;
   font-size: 16px;
+  font-family: inherit;
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
 }
 
-.todo-form select {
-  padding: 10px 8px;
-  font-size: 16px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+#todo-input,
+#todo-category,
+#todo-due {
+  flex: 1;
 }
 
 .todo-form button {
@@ -100,34 +109,19 @@ h1 {
   color: var(--muted);
 }
 
-/* スマホなど画面が狭いときは、入力欄だけ1行目に置き、残りを2行目に並べる */
-@media (max-width: 480px) {
-  body {
-    padding: 16px;
-  }
-
-  .app {
-    padding: 16px;
-  }
-
-  .todo-form {
-    flex-wrap: wrap;
-  }
-
-  .todo-form input {
-    flex-basis: 100%;
-  }
-
-  .todo-form select {
-    flex: 1;
-  }
+/* ---- タブと並べ替え ---- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 16px;
 }
 
-/* 表示切り替えタブ */
 .filters {
   display: flex;
   gap: 6px;
-  margin-top: 16px;
 }
 
 .filter-button {
@@ -157,6 +151,16 @@ h1 {
   border-color: var(--private);
 }
 
+.sort-select {
+  padding: 6px 8px;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* ---- ToDo 一覧 ---- */
 .todo-list {
   margin: 12px 0 0;
   padding: 0;
@@ -164,9 +168,6 @@ h1 {
 }
 
 .todo-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   padding: 12px 8px;
   border-bottom: 1px solid var(--border);
   border-left: 4px solid transparent;
@@ -181,6 +182,25 @@ h1 {
 .todo-item.private {
   background: var(--private-bg);
   border-left-color: var(--private);
+}
+
+/* チェック・文字・札・削除を横に並べる行 */
+.todo-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-main label {
+  flex: 1;
+  cursor: pointer;
+  word-break: break-all;
+}
+
+/* 完了した ToDo は線を引いて薄くする */
+.todo-item.done > .todo-main label {
+  color: var(--muted);
+  text-decoration: line-through;
 }
 
 /* 分類のラベル（「仕事」「プライベート」の小さな札）。押すと分類が切り替わる */
@@ -202,18 +222,6 @@ h1 {
   background: var(--private);
 }
 
-.todo-item label {
-  flex: 1;
-  cursor: pointer;
-  word-break: break-all;
-}
-
-/* 完了した ToDo は線を引いて薄くする */
-.todo-item.done label {
-  color: var(--muted);
-  text-decoration: line-through;
-}
-
 .delete-button {
   padding: 4px 10px;
   font-size: 14px;
@@ -224,8 +232,130 @@ h1 {
   cursor: pointer;
 }
 
+/* 期限や小タスクの情報を並べる行 */
+.todo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0 26px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.due-input {
+  padding: 2px 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+/* 期限の状態を表す小さな文字 */
+.due-status {
+  font-weight: bold;
+}
+
+.due-status.overdue {
+  color: var(--danger);
+}
+
+.due-status.soon {
+  color: var(--warning);
+}
+
+.subtask-toggle {
+  margin-left: auto;
+  padding: 2px 10px;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* ---- 小タスク ---- */
+.subtask-list {
+  margin: 8px 0 0 26px;
+  padding: 0;
+  list-style: none;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.subtask-item label {
+  flex: 1;
+  cursor: pointer;
+  word-break: break-all;
+}
+
+.subtask-item.done label {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.subtask-delete {
+  padding: 0 6px;
+  font-size: 16px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.subtask-form {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0 0 26px;
+}
+
+.subtask-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+  font-size: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.subtask-form button {
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .todo-count {
   margin: 16px 0 0;
   font-size: 14px;
   color: var(--muted);
+}
+
+/* スマホなど画面が狭いときは余白を小さくする */
+@media (max-width: 480px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .app {
+    padding: 16px;
+  }
+
+  .todo-meta,
+  .subtask-list,
+  .subtask-form {
+    margin-left: 0;
+  }
 }

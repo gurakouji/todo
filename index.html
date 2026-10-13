@@ -13,25 +13,41 @@
 
     <!-- 入力欄と追加ボタン。form にすると Enter キーでも追加できる -->
     <form id="todo-form" class="todo-form">
-      <input id="todo-input" type="text" placeholder="やることを入力" autocomplete="off" required>
-      <!-- 音声入力ボタン。type="button" にすると押してもフォームが送信されない -->
-      <button id="voice-button" type="button" class="voice-button" aria-label="音声で入力">🎤</button>
-      <!-- 分類を選ぶ。value の work / private がデータとして保存される -->
-      <select id="todo-category" aria-label="分類">
-        <option value="work">仕事</option>
-        <option value="private">プライベート</option>
-      </select>
-      <button type="submit">追加</button>
+      <!-- 1行目：やることの入力・音声入力・追加ボタン -->
+      <div class="form-row">
+        <input id="todo-input" type="text" placeholder="やることを入力" autocomplete="off" required>
+        <!-- 音声入力ボタン。type="button" にすると押してもフォームが送信されない -->
+        <button id="voice-button" type="button" class="voice-button" aria-label="音声で入力">🎤</button>
+        <button type="submit">追加</button>
+      </div>
+      <!-- 2行目：分類と期限 -->
+      <div class="form-row">
+        <!-- 分類を選ぶ。value の work / private がデータとして保存される -->
+        <select id="todo-category" aria-label="分類">
+          <option value="work">仕事</option>
+          <option value="private">プライベート</option>
+        </select>
+        <!-- 期限。空のままでもよい -->
+        <input id="todo-due" type="date" aria-label="期限">
+      </div>
     </form>
 
     <!-- 音声入力の状態（「聞き取り中…」など）を表示する場所 -->
     <p id="voice-status" class="voice-status" aria-live="polite"></p>
 
-    <!-- 表示の切り替えタブ。data-filter の値で絞り込む -->
-    <div id="filters" class="filters">
-      <button type="button" class="filter-button active" data-filter="all">すべて</button>
-      <button type="button" class="filter-button" data-filter="work">仕事</button>
-      <button type="button" class="filter-button" data-filter="private">プライベート</button>
+    <div class="toolbar">
+      <!-- 表示の切り替えタブ。data-filter の値で絞り込む -->
+      <div id="filters" class="filters">
+        <button type="button" class="filter-button active" data-filter="all">すべて</button>
+        <button type="button" class="filter-button" data-filter="work">仕事</button>
+        <button type="button" class="filter-button" data-filter="private">プライベート</button>
+      </div>
+      <!-- 並べ替え -->
+      <select id="sort-select" class="sort-select" aria-label="並べ替え">
+        <option value="added">追加順</option>
+        <option value="due">期限が近い順</option>
+        <option value="category">種類順</option>
+      </select>
     </div>
 
     <!-- ToDo の一覧。中身は script.js が作る -->
